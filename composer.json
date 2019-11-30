@@ -1,5 +1,5 @@
 {
-    "name": "omniphx/forrest",
+    "name": "playable-cn/forrest",
     "description": "A Laravel library for Salesforce",
     "license":"MIT",
     "keywords":["salesforce", "laravel", "rest", "force.com", "force"],
@@ -8,6 +8,12 @@
             "name": "Matthew Mitchener",
             "homepage": "http://mattmitchener.com",
             "email": "mattjmitchener@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "playable-cn",
+            "homepage": "http://www.playable.cn",
+            "email": "developer@playable.cn",
             "role": "Developer"
         }
     ],
