@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Omniphx\Forrest\Authentications\WebServer;
 use Omniphx\Forrest\Authentications\UserPassword;
+use Omniphx\Forrest\Authentications\UserPasswordDynamic;
 use Omniphx\Forrest\Authentications\UserPasswordSoap;
 use Omniphx\Forrest\Providers\Laravel\LaravelEvent;
 use Omniphx\Forrest\Providers\Laravel\LaravelEncryptor;
@@ -101,6 +102,22 @@ abstract class BaseServiceProvider extends ServiceProvider
             $formatter = new JSONFormatter($tokenRepo, $settings);
 
             switch ($authenticationType) {
+                case 'UserPasswordDynamic':
+                    $forrest = new UserPasswordDynamic(
+                        $httpClient,
+                        $encryptor,
+                        $event,
+                        $input,
+                        $redirect,
+                        $instanceURLRepo,
+                        $refreshTokenRepo,
+                        $resourceRepo,
+                        $stateRepo,
+                        $tokenRepo,
+                        $versionRepo,
+                        $formatter,
+                        $settings);
+                    break;
                 case 'WebServer':
                     $forrest = new WebServer(
                         $httpClient,
