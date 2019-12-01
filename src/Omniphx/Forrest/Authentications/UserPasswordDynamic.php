@@ -7,10 +7,15 @@ use Omniphx\Forrest\Interfaces\UserPasswordInterface;
 
 class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInterface
 {
-    public function setCredentials($stateOptions)
+    /**
+     * set credentials
+     * @param array | $credentials
+     * @return $this
+     */
+    public function setCredentials($credentials)
     {
-        if (empty($stateOptions)) {
-            return;
+        if (empty($credentials)) {
+            return $this;
         }
 
         $credentialKeys = [
@@ -18,36 +23,61 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         ];
 
         foreach ($credentialKeys as $key) {
-            if (isset($stateOptions[$key]) && !empty($stateOptions[$key])) {
-                $this->credentials[$key] = $stateOptions[$key];
+            if (isset($credentials[$key]) && !empty($credentials[$key])) {
+                $this->credentials[$key] = $credentials[$key];
             }
         }
+
+        return $this;
     }
 
-    public function authenticate($stateOptions = [])
+    /**
+     * authenticate
+     * @param  array  $credentials authenticate credentials
+     * @return bool
+     */
+    public function authenticate($credentials = [])
     {
-        $this->setCredentials($stateOptions);
+        $this->setCredentials($credentials);
 
-        $this->checkAuthToken();
+        $isNew = $this->checkAuthToken();
 
         $this->checkVersion();
+
+        return $isNew;
     }
 
+    /**
+     * get the tokenRepo
+     * @return TokenRepository
+     */
     public function getTokenRepo()
     {
         return $this->tokenRepo;
     }
 
+    /**
+     * get the stateRepo
+     * @return StateRepository
+     */
     public function getStateRepo()
     {
         return $this->stateRepo;
     }
 
+    /**
+     * get the versionRepo
+     * @return VersionRepository
+     */
     public function getVersionRepo()
     {
         return $this->versionRepo;
     }
 
+    /**
+     * get the resourceRepo
+     * @return ResourceRepository
+     */
     public function getResourceRepo()
     {
         return $this->resourceRepo;
@@ -56,7 +86,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     /**
      * Refresh authentication token by re-authenticating.
      *
-     * @return mixed $response
+     * @return mixed
      */
     public function refresh()
     {
@@ -64,6 +94,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         $authToken = $this->getAuthToken($tokenURL);
 
         $this->tokenRepo->put($authToken);
+
+        return $authToken;
     }
 
     /**
@@ -87,7 +119,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
      * @param  Array $parameters
      * @return String
      */
-    private function getAuthToken($url)
+    protected function getAuthToken($url)
     {
         $parameters['form_params'] = [
             'grant_type'    => 'password',
@@ -107,17 +139,28 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         return $authTokenDecoded;
     }
 
-    private function checkAuthToken()
+    /**
+     * check auth token is cached or request one new
+     * @return bool
+     */
+    protected function checkAuthToken()
     {
+        $isNew = false;
         if (!$this->tokenRepo->has()) {
+            $isNew = true;
             $loginURL = $this->credentials['loginURL'];
             $loginURL .= '/services/oauth2/token';
             $authToken = $this->getAuthToken($loginURL);
             $this->tokenRepo->put($authToken);
         }
+        return $isNew;
     }
 
-    private function checkVersion()
+    /**
+     * check api version.
+     * @return void
+     */
+    protected function checkVersion()
     {
         $currentVersion = '';
         if ($this->versionRepo->has()) {

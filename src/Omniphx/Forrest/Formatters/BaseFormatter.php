@@ -23,7 +23,6 @@ class BaseFormatter implements FormatterInterface
 
     public function formatResponse($response)
     {
-        print_r($response>getBody());
         return json_decode($response->getBody(), true);
     }
 
