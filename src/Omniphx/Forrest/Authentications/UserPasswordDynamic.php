@@ -174,7 +174,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     {
         $currentVersion = '';
         if ($this->versionRepo->has()) {
-            $currentVersion = $this->versionRepo->get();
+            $currentVersion = $this->versionRepo->get()['version'];
         }
         $configVersion = $this->settings['version'];
         
