@@ -19,7 +19,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         }
 
         $credentialKeys = [
-            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password'
+            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password', 'accessToken', 'instanceUrl', 'tokenType'
         ];
 
         foreach ($credentialKeys as $key) {
@@ -40,7 +40,17 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     {
         $this->setCredentials($credentials);
 
-        $isNew = $this->checkAuthToken();
+        if (isset($this->credentials['accessToken']) && !empty($this->credentials['accessToken'])) {
+            $isNew = false;
+            $authToken = [
+                'access_token' => $this->credentials['accessToken'],
+                'instance_url' => $this->credentials['instanceUrl'],
+                'token_type' => $this->credentials['tokenType'] ?? 'Bearer'
+            ];
+            $this->tokenRepo->put($authToken);
+        } else {
+            $isNew = $this->checkAuthToken();
+        }
 
         $this->checkVersion();
 

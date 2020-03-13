@@ -1,5 +1,8 @@
 # CHANGELOG
 
+##v2.5.6 (2020-03-12)
+[NEW] add token external input function in UserPasswordDynamic
+
 ##v2.5.5 (2019-12-01)
 [CHANGE] Optimization
 
