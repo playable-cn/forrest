@@ -1,4 +1,6 @@
 # CHANGELOG
+##v2.5.7 (2020-03-13)
+[FIX] fix checkVersion issues in UserPasswordDynamic
 
 ##v2.5.6 (2020-03-12)
 [NEW] add token external input function in UserPasswordDynamic
