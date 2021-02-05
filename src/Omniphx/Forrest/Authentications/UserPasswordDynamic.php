@@ -19,7 +19,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         }
 
         $credentialKeys = [
-            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password', 'accessToken', 'instanceUrl', 'tokenType'
+            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password', 'accessToken', 'refreshToken', 'instanceUrl', 'tokenType'
         ];
 
         foreach ($credentialKeys as $key) {
@@ -125,19 +125,28 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     }
 
     /**
-     * @param  String $tokenURL
+     * @param  String $url
      * @param  Array $parameters
      * @return String
      */
     protected function getAuthToken($url)
     {
-        $parameters['form_params'] = [
-            'grant_type'    => 'password',
-            'client_id'     => $this->credentials['consumerKey'],
-            'client_secret' => $this->credentials['consumerSecret'],
-            'username'      => $this->credentials['username'],
-            'password'      => $this->credentials['password'],
-        ];
+        if (isset($this->credentials['refreshToken']) && !empty($this->credentials['refreshToken'])) {
+            $parameters['form_params'] = [
+                'grant_type'    => 'refresh_token',
+                'client_id'     => $this->credentials['consumerKey'],
+                'client_secret' => $this->credentials['consumerSecret'],
+                'refresh_token' => $this->credentials['refreshToken'],
+            ];
+        } else {
+            $parameters['form_params'] = [
+                'grant_type'    => 'password',
+                'client_id'     => $this->credentials['consumerKey'],
+                'client_secret' => $this->credentials['consumerSecret'],
+                'username'      => $this->credentials['username'],
+                'password'      => $this->credentials['password'],
+            ];
+        }
 
         // \Psr\Http\Message\ResponseInterface
         $response = $this->httpClient->request('post', $url, $parameters);
