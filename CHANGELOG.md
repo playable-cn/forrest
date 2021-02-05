@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.8 (2021-02-05)
+[FIX] add refresh token auth in UserPasswordDynamic
+
 ##v2.5.7 (2020-03-13)
 [FIX] fix checkVersion issues in UserPasswordDynamic
 
