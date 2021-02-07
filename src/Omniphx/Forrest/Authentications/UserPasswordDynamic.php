@@ -101,9 +101,24 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     public function refresh()
     {
         $tokenURL = $this->credentials['loginURL'] . '/services/oauth2/token';
-        $authToken = $this->getAuthToken($tokenURL);
+        $authToken = $this->requestAuthToken($tokenURL);
 
         $this->tokenRepo->put($authToken);
+
+        if ($this->authRefreshCallback) {
+            $this->authRefreshCallback($authToken);
+        }
+
+        return $authToken;
+    }
+
+    public function getAuthToken($refresh = false)
+    {
+        if ($refresh || !$this->tokenRepo->has()) {
+            $authToken = $this->refresh();
+        } else {
+            $authToken = $this->tokenRepo->get();
+        }
 
         return $authToken;
     }
@@ -129,7 +144,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
      * @param  Array $parameters
      * @return String
      */
-    protected function getAuthToken($url)
+    protected function requestAuthToken($url)
     {
         if (isset($this->credentials['refreshToken']) && !empty($this->credentials['refreshToken'])) {
             $parameters['form_params'] = [
@@ -166,11 +181,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     {
         $isNew = false;
         if (!$this->tokenRepo->has()) {
+            $this->refresh();
             $isNew = true;
-            $loginURL = $this->credentials['loginURL'];
-            $loginURL .= '/services/oauth2/token';
-            $authToken = $this->getAuthToken($loginURL);
-            $this->tokenRepo->put($authToken);
         }
         return $isNew;
     }

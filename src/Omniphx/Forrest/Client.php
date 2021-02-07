@@ -112,6 +112,13 @@ abstract class Client
     protected $credentials;
 
     /**
+     *  auth refresh callback.
+     *
+     * @var callable
+     */
+    protected $authRefreshCallback;
+
+    /**
      * Request options.
      *
      * @var array
@@ -659,6 +666,12 @@ abstract class Client
     public function getClient()
     {
         return $this->httpClient;
+    }
+
+
+    public function setAuthRefreshCallback($callback)
+    {
+        $this->authRefreshCallback = $callback;
     }
 
     /**
