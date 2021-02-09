@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.11 (2021-02-09)
+[CHANGE] auth for token grant by refresh token not require secret
+
 ##v2.5.10 (2021-02-09)
 [FIX] fix callback call
 

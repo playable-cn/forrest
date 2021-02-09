@@ -151,7 +151,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
             $parameters['form_params'] = [
                 'grant_type'    => 'refresh_token',
                 'client_id'     => $this->credentials['consumerKey'],
-                'client_secret' => $this->credentials['consumerSecret'],
+                //'client_secret' => $this->credentials['consumerSecret'],
                 'refresh_token' => $this->credentials['refreshToken'],
             ];
         } else {
