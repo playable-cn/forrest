@@ -106,7 +106,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         $this->tokenRepo->put($authToken);
 
         if ($this->authRefreshCallback) {
-            $this->authRefreshCallback($authToken);
+            //$this->authRefreshCallback($authToken);
+            call_user_func($this->authRefreshCallback, $authToken);
         }
 
         return $authToken;

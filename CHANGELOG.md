@@ -1,6 +1,9 @@
 # CHANGELOG
+##v2.5.10 (2021-02-09)
+[FIX] fix callback call
+
 ##v2.5.9 (2021-02-07)
-[FIX] add auth refresh callback
+[NEW] add auth refresh callback
 
 ##v2.5.8 (2021-02-05)
 [FIX] add refresh token auth in UserPasswordDynamic
