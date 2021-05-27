@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.12 (2021-05-27)
+[FIX] fix resources repo data missing
+
 ##v2.5.11 (2021-02-09)
 [CHANGE] auth for token grant by refresh token not require secret
 
