@@ -48,6 +48,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
                 'token_type' => $this->credentials['tokenType'] ?? 'Bearer'
             ];
             $this->tokenRepo->put($authToken);
+            $this->instanceURLRepo->put($this->credentials['instanceUrl']);
         } else {
             $isNew = $this->checkAuthToken();
         }
@@ -202,6 +203,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         
         if (empty($currentVersion) || (!empty($configVersion) && $configVersion != $currentVersion)) {
             $this->storeVersion();
+        }
+        if (!$this->resourceRepo->has()) {
             $this->storeResources();
         }
     }
