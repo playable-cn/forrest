@@ -34,9 +34,10 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     /**
      * authenticate
      * @param  array  $credentials authenticate credentials
+     * @param  bool   $checkVersion
      * @return bool
      */
-    public function authenticate($credentials = [])
+    public function authenticate($credentials = [], $checkVersion = true)
     {
         $this->setCredentials($credentials);
 
@@ -53,7 +54,9 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
             $isNew = $this->checkAuthToken();
         }
 
-        $this->checkVersion();
+        if ($checkVersion) {
+            $this->checkVersion();
+        }
 
         return $isNew;
     }

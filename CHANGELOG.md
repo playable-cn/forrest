@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.13 (2022-02-08)
+[CHANGE] add checkVersion flag for authenticate in UserPasswordDynamic
+
 ##v2.5.12 (2021-05-27)
 [FIX] fix resources repo data missing
 
