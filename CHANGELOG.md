@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.14 (2022-12-08)
+[CHANGE] set instance_url for authenticate in UserPasswordDynamic
+
 ##v2.5.13 (2022-02-08)
 [CHANGE] add checkVersion flag for authenticate in UserPasswordDynamic
 

@@ -107,6 +107,10 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         $tokenURL = $this->credentials['loginURL'] . '/services/oauth2/token';
         $authToken = $this->requestAuthToken($tokenURL);
 
+        if (isset($this->credentials['instanceUrl']) && !empty($this->credentials['instanceUrl'])) {
+            $authToken['instance_url'] = $this->credentials['instanceUrl'];
+        }
+
         $this->tokenRepo->put($authToken);
 
         if ($this->authRefreshCallback) {
