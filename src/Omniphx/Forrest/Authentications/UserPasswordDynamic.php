@@ -164,8 +164,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         } else if (isset($this->credentials['password']) && !empty($this->credentials['password'])) {
             $parameters['form_params'] = [
                 'grant_type'    => 'password',
-                'client_id'     => $this->credentials['clientId'],
-                'client_secret' => $this->credentials['clientSecret'],
+                'client_id'     => $this->credentials['consumerKey'],
+                'client_secret' => $this->credentials['consumerSecret'],
                 'username'      => $this->credentials['username'],
                 'password'      => $this->credentials['password'],
             ];
