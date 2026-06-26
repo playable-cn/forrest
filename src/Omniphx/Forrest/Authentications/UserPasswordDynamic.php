@@ -153,7 +153,6 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
      */
     protected function requestAuthToken()
     {
-        $oauthEndpoint = $this->credentials['loginURL'];
         if (isset($this->credentials['refreshToken']) && !empty($this->credentials['refreshToken'])) {
             $parameters['form_params'] = [
                 'grant_type'    => 'refresh_token',
@@ -175,12 +174,9 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
                 'client_id'     => $this->credentials['consumerKey'],
                 'client_secret' => $this->credentials['consumerSecret'],
             ];
-            if (isset($this->credentials['instanceUrl']) && !empty($this->credentials['instanceUrl'])) {
-                $oauthEndpoint = $this->credentials['instanceUrl'];
-            }
         }
 
-        $url = $oauthEndpoint . '/services/oauth2/token';
+        $url = $this->credentials['loginURL'] . '/services/oauth2/token';
 
         // \Psr\Http\Message\ResponseInterface
         $response = $this->httpClient->request('post', $url, $parameters);
