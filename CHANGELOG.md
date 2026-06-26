@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.15 (2026-06-25)
+[CHANGE] add client_credentials for authenticate in UserPasswordDynamic
+
 ##v2.5.14 (2022-12-08)
 [CHANGE] set instance_url for authenticate in UserPasswordDynamic
 
