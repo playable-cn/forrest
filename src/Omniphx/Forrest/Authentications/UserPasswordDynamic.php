@@ -19,7 +19,8 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
         }
 
         $credentialKeys = [
-            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password', 'accessToken', 'refreshToken', 'instanceUrl', 'tokenType'
+            'loginURL', 'consumerKey', 'consumerSecret', 'username', 'password',
+            'accessToken', 'refreshToken', 'instanceUrl', 'tokenType'
         ];
 
         foreach ($credentialKeys as $key) {
@@ -104,8 +105,7 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
      */
     public function refresh()
     {
-        $tokenURL = $this->credentials['loginURL'] . '/services/oauth2/token';
-        $authToken = $this->requestAuthToken($tokenURL);
+        $authToken = $this->requestAuthToken();
 
         if (isset($this->credentials['instanceUrl']) && !empty($this->credentials['instanceUrl'])) {
             $authToken['instance_url'] = $this->credentials['instanceUrl'];
@@ -149,12 +149,11 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
     }
 
     /**
-     * @param  String $url
-     * @param  Array $parameters
      * @return String
      */
-    protected function requestAuthToken($url)
+    protected function requestAuthToken()
     {
+        $oauthEndpoint = $this->credentials['loginURL'];
         if (isset($this->credentials['refreshToken']) && !empty($this->credentials['refreshToken'])) {
             $parameters['form_params'] = [
                 'grant_type'    => 'refresh_token',
@@ -162,15 +161,26 @@ class UserPasswordDynamic extends BaseAuthentication implements UserPasswordInte
                 //'client_secret' => $this->credentials['consumerSecret'],
                 'refresh_token' => $this->credentials['refreshToken'],
             ];
-        } else {
+        } else if (isset($this->credentials['password']) && !empty($this->credentials['password'])) {
             $parameters['form_params'] = [
                 'grant_type'    => 'password',
-                'client_id'     => $this->credentials['consumerKey'],
-                'client_secret' => $this->credentials['consumerSecret'],
+                'client_id'     => $this->credentials['clientId'],
+                'client_secret' => $this->credentials['clientSecret'],
                 'username'      => $this->credentials['username'],
                 'password'      => $this->credentials['password'],
             ];
+        } else {
+            $parameters['form_params'] = [
+                'grant_type'    => 'client_credentials',
+                'client_id'     => $this->credentials['consumerKey'],
+                'client_secret' => $this->credentials['consumerSecret'],
+            ];
+            if (isset($this->credentials['instanceUrl']) && !empty($this->credentials['instanceUrl'])) {
+                $oauthEndpoint = $this->credentials['instanceUrl'];
+            }
         }
+
+        $url = $oauthEndpoint . '/services/oauth2/token';
 
         // \Psr\Http\Message\ResponseInterface
         $response = $this->httpClient->request('post', $url, $parameters);
