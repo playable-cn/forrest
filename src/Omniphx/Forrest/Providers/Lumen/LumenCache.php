@@ -13,6 +13,7 @@ class LumenCache extends StorageProvider
     protected $path;
     protected $minutes = 20;
     protected $storeForever;
+    protected $expirationConfig;
 
     public function __construct(Cache $cache, Config $config)
     {

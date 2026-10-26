@@ -66,6 +66,10 @@ abstract class Client
      */
     protected $event;
 
+    protected $instanceURLRepo;
+
+    protected $refreshTokenRepo;
+
     protected $resourceRepo;
 
     protected $stateRepo;
@@ -117,6 +121,13 @@ abstract class Client
      * @var callable
      */
     protected $authRefreshCallback;
+
+    /**
+     * Request URL.
+     *
+     * @var string
+     */
+    protected $url;
 
     /**
      * Request options.

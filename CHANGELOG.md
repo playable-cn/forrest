@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.5.18 (2026-10-26)
+[FIX] declare properties assigned dynamically (deprecated since PHP 8.2)
+
 ##v2.5.16 (2026-06-25)
 [CHANGE] set loginURL param for token auth endpoint
 

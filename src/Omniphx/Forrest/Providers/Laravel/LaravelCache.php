@@ -12,6 +12,7 @@ class LaravelCache extends LaravelStorageProvider
     protected $path;
     protected $minutes = 20;
     protected $storeForever;
+    protected $expirationConfig;
 
     public function __construct(Config $config, Cache $cache)
     {
